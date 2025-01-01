@@ -34,7 +34,7 @@ Hlavným cieľom ETL procesu bolo tieto údaje vyčistiť, transformovať a prip
 Zdrojové dáta sú usporiadané v relačnom modeli, ktorý je znázornený na **entitno-relačnom diagrame (ERD)**:
 
 <p align="center">
-  <img src="https://github.com/AdrianOswaldUKF/DT_MovieLens_Projekt/tree/main/erd_schema.png" alt="ERD Schema">
+  <img src="https://github.com/AdrianOswaldUKF/DT_MovieLens_Projekt/blob/main/erd_schema.png?raw=true" alt="ERD Schema">
   <br>
   <em>Obrázok 1 Entitno-relačná schéma MovieLens</em>
 </p>
@@ -55,7 +55,7 @@ Navrhnutý bol **hviezdicový model (star schema)**, ktorý je optimalizovaný n
 Štruktúra hviezdicového modelu je znázornená na diagrame nižšie. Tento diagram ilustruje prepojenia medzi faktovou tabuľkou a dimenziami, čím zjednodušuje pochopenie a implementáciu celého modelu.
 
 <p align="center">
-  <img src="https://github.com/AdrianOswaldUKF/DT_MovieLens_Projekt/tree/main/star_schema.png" alt="Star Schema">
+  <img src="https://github.com/AdrianOswaldUKF/DT_MovieLens_Projekt/blob/main/star_schema.png?raw=true" alt="Star Schema">
   <br>
   <em>Obrázok 2 Schéma hviezdy pre MovieLens</em>
 </p>
