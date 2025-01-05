@@ -226,5 +226,86 @@ ETL proces v Snowflake umožnil spracovanie pôvodných dát z `.csv` formátu d
 
 ---
 
-**Autor:** Adrián Oswald
+## **4 Vizualizácia dát**
 
+Dashboard obsahuje `5 vizualizácií`, ktoré poskytujú detailný prehľad o kľúčových ukazovateľoch a trendoch týkajúcich sa filmov, používateľov a ich hodnotení. Tieto vizualizácie odpovedajú na dôležité otázky a umožňujú lepšie pochopiť správanie divákov a ich preferencie.
+
+<p align="center">
+  <img src="https://github.com/AdrianOswaldUKF/DT_MovieLens_Projekt/blob/main/movielens_dashboard.png?raw=true" alt="ERD Schema">
+  <br>
+  <em>Obrázok 3 Dashboard MovieLens datasetu</em>
+</p>
+
+---
+### **Graf 1: Časové rozloženie hodnotení**
+Táto vizualizácia zobrazuje počet hodnotení podľa hodiny dňa a rozlíšenia na dopoludnie (AM) a popoludnie (PM). Umožňuje analyzovať, kedy sú používatelia najaktívnejší pri hodnotení filmov. Dáta môžu byť užitočné na plánovanie marketingových kampaní alebo časovania odporúčaní filmov.
+
+```sql
+SELECT 
+    t.hour, 
+    t.am_pm, 
+    COUNT(r.ID) AS rating_count
+FROM fact_ratings r
+JOIN dim_time t ON r.dim_time_ID = t.ID
+GROUP BY t.hour, t.am_pm
+ORDER BY t.hour, t.am_pm;
+```
+---
+### **Graf 2: Priemerné hodnotenie podľa vekových skupín**
+Graf znázorňuje priemerné hodnotenia filmov podľa vekových skupín používateľov. Z údajov možno zistiť, ako sa hodnotiace preferencie líšia medzi mladšími a staršími skupinami divákov. Tento pohľad môže pomôcť pri cielení odporúčaní na základe demografických údajov.
+
+```sql
+SELECT 
+    u.age_group_name, 
+    ROUND(AVG(r.rating), 2) AS avg_rating
+FROM fact_ratings r
+JOIN dim_users u ON r.dim_users_ID = u.ID
+GROUP BY u.age_group_name
+ORDER BY avg_rating DESC;
+```
+---
+### **Graf 3: Percentuálne zastúpenie žánrov vo všetkých hodnoteniach**
+Vizualizácia ukazuje rozdelenie hodnotení podľa žánrov a poskytuje pohľad na preferované kategórie filmov. Pomocou tohto grafu možno identifikovať dominantné žánre a analyzovať, ktoré typy filmov sú medzi používateľmi najobľúbenejšie.
+
+```sql
+SELECT 
+    g.name AS genre, 
+    ROUND(COUNT(r.ID) * 100.0 / SUM(COUNT(r.ID)) OVER (), 2) AS percentage
+FROM fact_ratings r
+JOIN dim_genres g ON r.dim_genres_ID = g.ID
+GROUP BY g.name
+ORDER BY percentage DESC;
+```
+---
+### **Graf 4: Aktivita hodnotení podľa dní v týždni a sezónnych trendov**
+Graf zobrazuje počet hodnotení počas jednotlivých dní v týždni a zároveň ukazuje sezónne trendy podľa štvrťrokov. Tento pohľad odhaľuje, kedy sú používatelia najaktívnejší a aké sú rozdiely medzi rôznymi obdobiami roka, čo môže pomôcť pri plánovaní propagačných akcií.
+
+```sql
+SELECT 
+    d.day_of_week_as_string, 
+    EXTRACT(QUARTER FROM d.date) AS quarter,
+    COUNT(r.ID) AS rating_count
+FROM fact_ratings r
+JOIN dim_date d ON r.dim_date_ID = d.ID
+GROUP BY d.day_of_week_as_string, EXTRACT(QUARTER FROM d.date)
+ORDER BY quarter, rating_count DESC;
+```
+---
+### **Graf 5: Rozloženie hodnotení podľa dĺžky názvov filmov**
+Táto vizualizácia analyzuje počet hodnotení na základe dĺžky názvov filmov. Pomáha identifikovať, či existuje súvislosť medzi dĺžkou názvu filmu a jeho popularitou, čo môže byť zaujímavé pre marketing a branding.
+
+```sql
+SELECT 
+    LENGTH(m.title) AS title_length, 
+    COUNT(r.ID) AS rating_count
+FROM fact_ratings r
+JOIN dim_movies m ON r.dim_movies_ID = m.ID
+GROUP BY LENGTH(m.title)
+ORDER BY title_length;
+```
+---
+
+Dashboard poskytuje komplexný pohľad na údaje o filmoch, hodnoteniach a používateľoch. Tieto vizualizácie umožňujú identifikovať kľúčové trendy a správanie divákov, čo môže byť využité na optimalizáciu odporúčacích systémov, marketingových stratégií a zlepšenie užívateľského pocitu.
+
+---
+**Autor:** Adrián Oswald
