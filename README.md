@@ -12,7 +12,7 @@ Tento repozitár obsahuje implementáciu ETL procesu v Snowflake na analýzu úd
 
 Primárnym cieľom tohto semestrálneho projektu je analyzovať údaje týkajúce sa filmov, používateľov a ich hodnotení. Táto analýza poskytuje prehľad o preferenciách, identifikuje najobľúbenejšie filmy a správanie jednotlivých používateľov.
 
-Zdrojové dáta boli získané zo školského servera Moodle. Dataset je dostupný [tu](https://edu.ukf.sk/mod/folder/view.php?id=252867). Obsahuje osem hlavných tabuliek:
+Zdrojové dáta boli získané z Movielens datasetu. Dataset je dostupný [tu](https://grouplens.org/datasets/movielens/). Obsahuje osem hlavných tabuliek:
 
 - `age_group`
 - `genres`
